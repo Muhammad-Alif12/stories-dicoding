@@ -85,15 +85,34 @@ registerRoute(
   }),
 );
 
-self.addEventListener("push", (event) => {
-  console.log("Service worker pushing...");
+// self.addEventListener("push", (event) => {
+//   console.log("Service worker pushing...");
 
-  async function chainPromise() {
-    const data = await event.data.json();
-    await self.registration.showNotification(data.title, {
-      body: data.options.body,
-    });
+//   async function chainPromise() {
+//     const data = await event.data.json();
+//     await self.registration.showNotification(data.title, {
+//       body: data.options.body,
+//     });
+//   }
+
+//   event.waitUntil(chainPromise());
+// });
+
+self.addEventListener("push", (event) => {
+  async function showNotification() {
+    let data = {};
+
+    if (event.data) {
+      const text = event.data.text();
+      try {
+        data = JSON.parse(text);
+      } catch {
+        data = { title: text };
+      }
+    }
+
+    await self.registration.showNotification(data.title || "Notifikasi");
   }
 
-  event.waitUntil(chainPromise());
+  event.waitUntil(showNotification());
 });
