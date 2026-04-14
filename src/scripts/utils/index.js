@@ -34,8 +34,9 @@ export async function registerServiceWorker() {
   }
 
   try {
-    const registration =
-      await navigator.serviceWorker.register("/sw.bundle.js");
+    const registration = await navigator.serviceWorker.register(
+      "/stories-dicoding/sw.bundle.js",
+    );
     console.log("Service worker telah terpasang", registration);
   } catch (error) {
     console.log("Failed to install service worker:", error);
